@@ -4,6 +4,8 @@ import (
 	"embed"
 	"log"
 	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -21,16 +23,31 @@ func main() {
 	// router.StaticFS("/fs", http.FileSystem(http.FS(f)))
 
 	// http.Request object
-	router.GET("/*rest", func(c *gin.Context) {
-		url := c.Request.URL.String()
-		headers := c.Request.Header
-		cookies := c.Request.Cookies()
+	// router.GET("/*rest", func(c *gin.Context) {
+	// 	url := c.Request.URL.String()
+	// 	headers := c.Request.Header
+	// 	cookies := c.Request.Cookies()
 
-		c.IndentedJSON(http.StatusOK, gin.H{
-			"url":     url,
-			"headers": headers,
-			"cookies": cookies,
+	// 	c.IndentedJSON(http.StatusOK, gin.H{
+	// 		"url":     url,
+	// 		"headers": headers,
+	// 		"cookies": cookies,
+	// 	})
+	// })
+
+	// http://localhost:3000/query/?username=john&year=2010&month=1&month=2
+
+	router.GET("/query/*rest", func(c *gin.Context) {
+		username := c.Query("username")
+		year := c.DefaultQuery("year", strconv.Itoa(time.Now().Year()))
+		months := c.QueryArray("month")
+
+		c.JSON(http.StatusOK, gin.H{
+			"username": username,
+			"year":     year,
+			"months":   months,
 		})
 	})
-	log.Fatal(router.Run(":3000")) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+
+	log.Fatal(router.Run(":3000"))
 }
