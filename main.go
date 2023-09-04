@@ -42,5 +42,20 @@ func main() {
 		})
 	})
 
+	// Route Groups
+	adminGroup := router.Group("/admin")
+
+	adminGroup.GET("/users", func(c *gin.Context) {
+		c.String(http.StatusOK, "Admin Users")
+	})
+
+	adminGroup.GET("/roles", func(c *gin.Context) {
+		c.String(http.StatusOK, "Admin Roles")
+	})
+
+	adminGroup.GET("/policies", func(c *gin.Context) {
+		c.String(http.StatusOK, "Admin Policies")
+	})
+
 	log.Fatal(router.Run(":3000")) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
