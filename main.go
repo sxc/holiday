@@ -1,11 +1,15 @@
 package main
 
 import (
+	"embed"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
+
+//go:embed public/*
+var f embed.FS
 
 func main() {
 	router := gin.Default()
@@ -16,10 +20,14 @@ func main() {
 	// })
 
 	// Static Routes
-	router.Static("/statics", "./statics")
+	router.StaticFile("/", "./public/index.html")
+
+	router.Static("/public", "./public")
+
+	router.StaticFS("/fs", http.FileSystem(http.FS(f)))
 
 	// Static Routes to string
-	router.GET("/", func(c *gin.Context) {
+	router.GET("/hello/world", func(c *gin.Context) {
 		c.String(http.StatusOK, "Hello, world!")
 	})
 
