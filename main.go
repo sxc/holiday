@@ -13,13 +13,7 @@ var f embed.FS
 
 func main() {
 	router := gin.Default()
-	// router.GET("/ping", func(c *gin.Context) {
-	// 	c.JSON(http.StatusOK, gin.H{
-	// 		"message": "pong",
-	// 	})
-	// })
 
-	// Static Routes
 	router.StaticFile("/", "./public/index.html")
 
 	router.Static("/public", "./public")
@@ -29,6 +23,15 @@ func main() {
 	// Static Routes to string
 	router.GET("/hello/world", func(c *gin.Context) {
 		c.String(http.StatusOK, "Hello, world!")
+	})
+
+	// Routing with HTTP verbs
+	router.GET("/employee", func(c *gin.Context) {
+		c.File("./public/employee.html")
+	})
+
+	router.POST("/employee", func(c *gin.Context) {
+		c.String(http.StatusOK, "New request POSTed successfully")
 	})
 
 	log.Fatal(router.Run(":3000")) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
