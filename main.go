@@ -34,5 +34,16 @@ func main() {
 		c.String(http.StatusOK, "New request POSTed successfully")
 	})
 
+	// var username string
+	// Parameterized Routes
+	router.GET("/employees/:username/*rest", func(c *gin.Context) {
+		username := c.Param("username")
+		rest := c.Param("rest")
+		wholeroute := c.FullPath()
+
+		c.String(http.StatusOK, "Username: "+username+", Rest: "+rest+", Full route: "+wholeroute)
+
+	})
+
 	log.Fatal(router.Run(":3000")) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
