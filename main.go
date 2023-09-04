@@ -49,5 +49,21 @@ func main() {
 		})
 	})
 
+	router.GET("/employee", func(c *gin.Context) {
+		c.File("./public/employee.html")
+	})
+
+	router.POST("/employee", func(c *gin.Context) {
+		date := c.PostForm("date")
+		amount := c.PostForm("amount")
+		username := c.DefaultPostForm("username", "john")
+
+		c.IndentedJSON(http.StatusOK, gin.H{
+			"date":     date,
+			"amount":   amount,
+			"username": username,
+		})
+	})
+
 	log.Fatal(router.Run(":3000"))
 }
