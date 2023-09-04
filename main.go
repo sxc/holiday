@@ -14,48 +14,23 @@ var f embed.FS
 func main() {
 	router := gin.Default()
 
-	router.StaticFile("/", "./public/index.html")
+	// router.StaticFile("/", "./public/index.html")
 
-	router.Static("/public", "./public")
+	// router.Static("/public", "./public")
 
-	router.StaticFS("/fs", http.FileSystem(http.FS(f)))
+	// router.StaticFS("/fs", http.FileSystem(http.FS(f)))
 
-	// Static Routes to string
-	router.GET("/hello/world", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello, world!")
-	})
+	// http.Request object
+	router.GET("/*rest", func(c *gin.Context) {
+		url := c.Request.URL.String()
+		headers := c.Request.Header
+		cookies := c.Request.Cookies()
 
-	// Routing with HTTP verbs
-	router.GET("/employee", func(c *gin.Context) {
-		c.File("./public/employee.html")
-	})
-
-	router.POST("/employee", func(c *gin.Context) {
-		c.String(http.StatusOK, "New request POSTed successfully")
-	})
-
-	// Parameterized Routes
-	router.GET("/employees/:username/*rest", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"username": c.Param("username"),
-			"rest":     c.Param("rest"),
+		c.IndentedJSON(http.StatusOK, gin.H{
+			"url":     url,
+			"headers": headers,
+			"cookies": cookies,
 		})
 	})
-
-	// Route Groups
-	adminGroup := router.Group("/admin")
-
-	adminGroup.GET("/users", func(c *gin.Context) {
-		c.String(http.StatusOK, "Admin Users")
-	})
-
-	adminGroup.GET("/roles", func(c *gin.Context) {
-		c.String(http.StatusOK, "Admin Roles")
-	})
-
-	adminGroup.GET("/policies", func(c *gin.Context) {
-		c.String(http.StatusOK, "Admin Policies")
-	})
-
 	log.Fatal(router.Run(":3000")) // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
