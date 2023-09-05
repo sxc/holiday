@@ -11,8 +11,8 @@ import (
 )
 
 type TimeoffRequest struct {
-	Date   time.Time `form:"date" binding:"-" time_format:"2006-01-02"`
-	Amount float64   `form:"amount" binding:"-"`
+	Date   time.Time `json:"date" form:"date" binding:"-" time_format:"2006-01-02"`
+	Amount float64   `json:"amount" form:"amount" binding:"-"`
 }
 
 //go:embed public/*
@@ -67,15 +67,15 @@ func main() {
 		}
 	})
 
-	// date := c.PostForm("date")
-	// amount := c.PostForm("amount")
-	// username := c.DefaultPostForm("username", "john")
-
-	// c.IndentedJSON(http.StatusOK, gin.H{
-	// 	"date":     date,
-	// 	"amount":   amount,
-	// 	"username": username,
-	// })
+	apiGroup := router.Group("/api")
+	apiGroup.POST("/timeoff", func(c *gin.Context) {
+		var timeoffRequest TimeoffRequest
+		if err := c.ShouldBind(&timeoffRequest); err == nil {
+			c.JSON(http.StatusOK, timeoffRequest)
+		} else {
+			c.String(http.StatusInternalServerError, err.Error())
+		}
+	})
 
 	log.Fatal(router.Run(":3000"))
 }
