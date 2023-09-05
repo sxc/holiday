@@ -27,9 +27,10 @@
 !*.css
 !*.js
 !*.html
+!/cmd/holiday/main.go
 
 # !Makefile
 
 # ...even if they are in subdirectories
-!*/
+# !*/
 holiday
