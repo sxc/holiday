@@ -68,10 +68,33 @@ func main() {
 		}
 		defer f.Close()
 		data, err := io.ReadAll(f)
+
 		if err != nil {
 			c.AbortWithError(http.StatusInternalServerError, err)
 		}
 		c.Data(http.StatusOK, "text/plain", data)
+
+	})
+
+	router.GET("/grate_expectations", func(c *gin.Context) {
+		f, err := os.Open("./grate_expectations.txt")
+		if err != nil {
+			c.AbortWithError(http.StatusInternalServerError, err)
+		}
+		defer f.Close()
+
+		fi, err := f.Stat()
+		if err != nil {
+			c.AbortWithError(http.StatusInternalServerError, err)
+		}
+		c.DataFromReader(http.StatusOK,
+			fi.Size(),
+			"text/plain",
+			f,
+			map[string]string{
+				"Content-Disposition": `attachment; filename="tale_of_two_cities.txt"`,
+			},
+		)
 	})
 
 	log.Fatal(router.Run(":3000"))
