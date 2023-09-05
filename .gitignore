@@ -33,6 +33,6 @@
 
 # ...even if they are in subdirectories
 # !*/
-*.txt
 holiday
 .DS_Store
+*.txt
