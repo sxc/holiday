@@ -5,29 +5,29 @@
 # Recommended: Go.AllowList.gitignore
 
 # Ignore everything
-*
+# *
 
 # But not these files...
-!/.gitignore
+# !/.gitignore
 
-!*.go
-!go.sum
-!go.mod
-!*.tmpl
-!*.gohtml
-!*.sql
-!modd.conf
-!*.yml
-!Dockerfile
-!Caddyfile
+# !*.go
+# !go.sum
+# !go.mod
+# !*.tmpl
+# !*.gohtml
+# !*.sql
+# !modd.conf
+# !*.yml
+# !Dockerfile
+# !Caddyfile
 
-!README.md
-!LICENSE
+# !README.md
+# !LICENSE
 
-!*.css
-!*.js
-!*.html
-!/cmd/holiday/main.go
+# !*.css
+# !*.js
+# !*.html
+# !/cmd/holiday
 
 # !Makefile
 
