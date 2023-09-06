@@ -30,40 +30,6 @@ func main() {
 
 func registerRoutes(r *gin.Engine) {
 
-	// r.GET("/", func(c *gin.Context) {
-	// 	c.Redirect(http.StatusFound, "/employees")
-	// })
-
-	// r.GET("/employees", func(c *gin.Context) {
-	// 	c.HTML(http.StatusOK, "index.tmpl", employee.GetAll())
-	// })
-
-	// r.GET("/employees/:employeeID", func(c *gin.Context) {
-	// 	employeeIDRaw := c.Param("employeeID")
-
-	// 	if emp, ok := tryToGetEmployee(c, employeeIDRaw); ok {
-	// 		c.HTML(http.StatusOK, "employee.tmpl", *emp)
-	// 	}
-	// })
-
-	// r.POST("/employees/:employeeID", func(c *gin.Context) {
-	// 	var timeoff employee.TimeOff
-	// 	err := c.ShouldBind(&timeoff)
-	// 	if err != nil {
-	// 		c.AbortWithStatus(http.StatusBadRequest)
-	// 		return
-	// 	}
-	// 	timeoff.Type = employee.TimeoffTypePTO
-	// 	timeoff.Status = employee.TimeoffStatusRequested
-
-	// 	employeeIDRaw := c.Param("employeeID")
-	// 	if emp, ok := tryToGetEmployee(c, employeeIDRaw); ok {
-	// 		emp.TimeOff = append(emp.TimeOff, timeoff)
-	// 		c.Redirect(http.StatusFound, "/employees/"+employeeIDRaw)
-	// 	}
-
-	// })
-
 	g := r.Group("/api/employees", Benchmark)
 	g.GET("/", func(c *gin.Context) {
 		c.JSON(http.StatusOK, employee.GetAll())
