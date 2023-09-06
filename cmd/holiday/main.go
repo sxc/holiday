@@ -24,6 +24,7 @@ func main() {
 	// r.Use(gin.BasicAuth(gin.Accounts{"admin": "password"}))
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 	r.Use(myErrorLogger)
+	r.Use(gin.CustomRecovery(myRecoveryFunc))
 	registerRoutes(r)
 
 	r.Run()
@@ -68,6 +69,10 @@ func registerRoutes(r *gin.Engine) {
 		c.Error(err)
 	})
 
+	r.GET("/panic", func(c *gin.Context) {
+		panic("something went horribly wrong")
+	})
+
 	r.Static("/public", "./public")
 }
 
@@ -89,6 +94,10 @@ var myErrorLogger gin.HandlerFunc = func(c *gin.Context) {
 			"Meta": err.Meta,
 		})
 	}
+}
+
+var myRecoveryFunc gin.RecoveryFunc = func(c *gin.Context, err any) {
+	log.Print("Custom recovery funcitons can be used to add fine-grained control over recovery strategies.", err)
 }
 
 func tryToGetEmployee(c *gin.Context, employeeIDRaw string) (*employee.Employee, bool) {
